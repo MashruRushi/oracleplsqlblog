@@ -1,0 +1,197 @@
+﻿@model KishanBlog.Models.YouTubeVideo
+@using System.Data;
+@using System.Configuration;
+@{
+    ViewBag.Title = "YouTube Video Index";
+    ViewBag.Description = "This page pulls you tube videos from kishan mashrus pl/sql channel";
+    ViewBag.Keywords = "Plsql,PL/SQL,Blog,YouTube Videos,Oracle,Oracle 10g,Oracle plsql,Oracle pl/sql interview question,Oracle Tips and Tricks,Kishan Mashru,pl/sql syntax,profile,users,profile picture,blog profile";
+    var Data = ViewBag.VideoData;
+    var pageSize = ViewBag.pageSize;
+    var version = ConfigurationManager.AppSettings["StaticVersion"].ToString();
+}
+<link href="~/Content/BlogIndex.css?v=@version" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<style>
+    a {
+        color: black;
+    }
+</style>
+<div class="block">
+    <div class="row margBtm">
+        <div class="col-md-12">
+            <h1 class="redClr"><i class="fa fa-youtube"></i>YouTube Videos</h1>
+        </div>
+    </div>
+    <div class="row margBtm hidden-xs">
+        <div class="row "><div class="col-md-6"></div></div>
+        <div class="col-md-6 pull-right" style="padding-left:5%; color:red;">
+            <h4>Kishan Mashru's PL/SQL Videos</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-6" style="padding-right:5px;">
+            <div id="player">
+            </div>
+            <div class="videoDescription" style="margin-top:20px; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size:16px;">
+                <p>How to write a program for find a factorial of a given number in Oracle PL/SQL? This video tutorial answers this interview question with a simple and easy to ...</p>
+            </div>
+        </div>
+        <div class="col-xs-12 pull-right hidden-sm hidden-lg hidden-md" style="color:red;">
+            <h4>Kishan Mashru's PL/SQL Videos</h4>
+        </div>
+        <div class="col-xs-12 col-md-6 videoGrid">
+            @if (Data.Rows.Count > 0)
+            {
+                foreach (DataRow dr in Data.Rows)
+                {
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <a href="javascript:void(0);" class="videothumbnail" data-videoId="@dr["YTVideoId"].ToString()" data-description="@dr["VideoDescription"].ToString()">
+                                <div class="col-xs-12 col-md-6 videoThumnail">
+                                    <span style="color: red; display:none;"><i class="fa fa-youtube-play" style="font-size:20px;"></i> Now Playing</span>
+                                    <img src="@dr["ThumbnailUrl"].ToString()" class="img-responsive thumbnail" />
+                                </div>
+                                <div class="col-xs-12 col-md-6 videoBio">
+                                    <strong>@dr["VideoTitle"].ToString()</strong>
+                                    <div class="videoDetails">
+                                        <p style="color:gray;">Published On: @Convert.ToString(dr["PublishedAt"]).TrimStart('T')</p>
+                                        <p style="color:gray;">Published By: Kishan Mashru</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <hr class="cm-hr" style="border:1px solid #ccc;" />
+                    </div>
+                }
+                <div class="row mb-xs">
+                    <div class="col-lg-6 back">
+                        <a href="@Url.Action("YouTubeVideoGridIndex","YouTubeVideoGrid",new {Type="back",PS=pageSize})" id="Back" class="pull-left" style="visibility:@ViewBag.BackClass;"><span class="glyphicon glyphicon-arrow-up"></span> Back</a>
+                    </div>
+                    <div class="col-lg-6 load">
+                        <a href="@Url.Action("YouTubeVideoGridIndex","YouTubeVideoGrid",new {Type="load",PS=pageSize})" id="LoadMore" class="pull-right" style="visibility:@ViewBag.LoadClass;"><span class="glyphicon glyphicon-arrow-down"></span> Load More</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-md-12">
+                        <strong>No video uploaded</strong>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <hr class="cm-hr" style="border:1px solid #ccc;" />
+                </div>
+            }
+            @*<div class="row">
+                    <div class="col-md-12">
+                        <a href="javascript:void(0);" class="videothumbnail" data-videoId="RhwdXt_mOJE">
+                            <div class="col-md-6" style="width:30%;">
+                                <img src="https://i.ytimg.com/vi/RhwdXt_mOJE/hqdefault.jpg" width="180" height="100" class="img-responsive" />
+                            </div>
+                            <div class="col-md-6" style="width:70%;">
+                                <strong>ORACLE PL/SQL INTERVIEW :PALINDROME NUMBER OR STRING PROGRAM</strong>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <hr class="cm-hr" style="border:1px solid #ccc;" />
+                </div>
+            *@
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script>
+        var isMobile = {
+            Android: function () {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function () {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function () {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function () {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function () {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function () {
+                return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+            }
+        };
+
+        var playerHeight = "";
+        var playerWidth = "";
+        if (isMobile.Android() || isMobile.iOS()) {
+            playerWidth = "300"
+            playerHeight = "180"
+        } else {
+            playerWidth = "560"
+            playerHeight = "390";
+        }
+        //var Id = $('#hdYTVideoId').val();
+        // 2. This code loads the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: playerHeight,
+                width: playerWidth,
+                videoId: 'OgEmJtOQ7hg',
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            //event.target.playVideo();
+        }
+
+        // 5. The API calls this function when the player's state changes.
+        //    The function indicates that when playing a video (state=1),
+        //    the player should play for six seconds and then stop.
+        var done = false;
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING && !done) {
+                //setTimeout(stopVideo, 6000);
+                done = true;
+            }
+        }
+        function stopVideo() {
+            player.stopVideo();
+        }
+
+        $(".videothumbnail").click(function () {
+            var ID = $(this).attr("data-videoId");
+            player.loadVideoById({
+                videoId: ID
+            });
+
+            $(".videothumbnail").find("span").css("display", "none");
+            $(this).find("span").css("display", "");
+            $(".videoDescription p").text($(this).attr("data-description"));
+        });
+        $(document).ready(function () {
+            $(".videoDescription p").text("This video tutorial is on frequently asked interview question like the difference between delete and truncate statement in oracle sql, after watching this video you ...");
+        });
+    </script>
+}

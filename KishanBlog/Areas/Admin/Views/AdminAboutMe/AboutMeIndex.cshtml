@@ -1,0 +1,106 @@
+﻿@model KishanBlog.Models.AboutMe
+
+@{
+    ViewBag.Title = "About Me Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+}
+
+<link href="~/Content/Blog.css" rel="stylesheet" />
+
+@using (Html.BeginForm("AboutMeIndex", "AdminAboutMe", FormMethod.Post))
+{
+    <div class="block">
+        @Html.HiddenFor(model=>model.AboutMeId)
+        @if (ViewBag.Msg != "" || ViewBag.Msg != null)
+        {
+
+
+            <div class="row alert @ViewBag.Status">
+                <div class="col-md-12">
+                    <span>@ViewBag.Message</span>
+                </div>
+            </div>
+        }
+        <div class="row" style="margin-bottom:30px;">
+            <div class="col-md-12">
+                <h1>About Me</h1>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:30px;">
+            <div class="col-md-2">
+                <strong>Description Type:</strong>
+            </div>
+                <div class="col-md-4">
+                    @Html.EnumDropDownListFor(model => model.DescriptionType, new { @class = "form-control" })
+                </div>
+            </div>
+        <div class="row" style="margin-bottom:30px;">
+            <div class="col-md-2">
+                <strong class="labels">About Blog:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.AboutMeDescription, new { @class = "form-control", @rows = "8" })
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:30px;">
+            <div class="col-md-12">
+                <center><input type="submit" class="btn btn-default primaryBtn" value="Publish" /></center>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script src="~/Areas/ckeditor/ckeditor.js"></script>
+<script>  
+    $(document).ready(function () {
+        CKEDITOR.replace('AboutMeDescription', {
+            height: 350,
+            width: 880,
+        });
+    });
+    $("#DescriptionType").change(function () {
+        var value = $(this).val();
+        if (value == 0) {
+            $('.labels').text("About Blog:");
+        }
+        if (value == 1) {
+            $('.labels').text("About Experience:");
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/AdminAboutMe/AboutMeFillData",
+            data: '{Type:"'+value+'"}',
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",            
+            success: function (response) {
+                if (response.Status == true)
+                {
+                    $("#AboutMeId").attr('value', response.AboutMeId);
+                    CKEDITOR.instances.AboutMeDescription.setData(response.AboutMeDescription);                    
+                }                
+            },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+            error: function (response) {
+                alert(response.responseText);
+            }
+
+
+        });
+
+        //$('body').load('http://localhost:1261/Admin/AdminAboutMe/AboutMeIndex?Type=' + value, function () {
+        //    debugger;
+        //    if (value == 0) {
+        //        $('.labels').text("About Blog:");
+        //    }
+        //    if (value == 1) {
+        //        $('.labels').text("About Experience:");
+        //    }
+        //});
+    });
+</script>
+    
+    }

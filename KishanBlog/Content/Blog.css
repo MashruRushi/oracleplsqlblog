@@ -1,0 +1,33 @@
+﻿.Title{
+    font-size:3rem;
+    color:#000000 !important;
+}
+
+.author{
+    color:red !important;
+}
+
+.publishDetails{
+    color:gray !important;
+    font-size:1.4rem;
+}
+
+.mrgBtm{
+    margin-bottom:20px !important;
+}
+
+.clrval{
+    color:red !important;
+}
+
+
+.primaryBtn {
+    color: white !important;
+    background-color: red !important;
+    border-color: gray !important;
+}
+
+.img{
+    border:1px  solid #ccc;
+    height:200px;
+}

@@ -1,0 +1,155 @@
+﻿@model KishanBlog.Models.YouTubeVideo
+@using System.Data;
+
+@{
+    ViewBag.Title = "You Tube Video";
+    var Data = ViewBag.VideoList;
+}
+<link href="~/Content/Blog.css" rel="stylesheet" />
+
+@*@using (Html.BeginForm("YTVideoInfoIndex", "AdminYTVideoInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {*@
+<div class="block">
+    <div class="row margBtm">
+        <div class="col-md-12">
+            <h1>YouTube Video Information</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            Video Id
+                        </th>
+                        <th>
+                            Tool
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="title">
+                    @if (ViewBag.VideoList != null)
+                    {
+                        foreach (DataRow dr in Data.Rows)
+                        {
+                            <tr>
+                                <td class="clstitle" data-description="@dr["VideoDescription"]" data-thumbnail="@dr["ThumbnailUrl"]" data-date="@dr["PublishedAt"]">@dr["VideoTitle"]</td>
+                                <td class="clsvideoId">@dr["YTVideoId"]</td>
+                                <td><strong>Video Added</strong></td>
+                                @*<button class="btn btn-sm primaryBtn pull-right btnsave" data-id="@dr["YTVideoId"]" style="margin-right:15px;"><i class="fa fa-save" style="font-size:18px !important;"></i> Save Video</button>*@
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <input type="hidden" value="@ViewBag.date" class="hdnDate" />
+    <div class="row">
+        <div class="col-md-12">            
+            <button class="btn primaryBtn pull-right" id="getmorevideos" data-NextToken=""><i class="fa fa-arrow-right" style="font-size:18px !important;"></i> Get More Videos</button>
+            <button class="btn primaryBtn pull-right" id="getvideo"><i class="fa fa-youtube" style="font-size:18px !important;"></i> Get Youtube Details</button>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            //alert("ok");
+            $("#getmorevideos").hide();
+        });
+
+        $("body").on("click", "#getvideo, #getmorevideos", (function () {          
+            var LastDate = $(".hdnDate").val();
+            var Date = "2016-01-01T06:37:12.000Z";
+            if (LastDate != undefined && LastDate != "" && LastDate != null) {
+                Date = LastDate;
+            }
+            var token = $(this).attr("data-NextToken");
+            var Token = "";
+            if(token != undefined && token != "" && token != null)
+            {
+                Token = token;
+            }            
+            $.ajax({
+                type: "GET",
+                url: "https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UCxG8X3oiBsqTKFhrk53AfXw&type=video&key=AIzaSyDEgF1sMlkVTvBE6hWpmf5qrzUDvQURUKw&maxResults=50&order=date&pageToken=" + Token + "&publishedAfter=" + Date,
+                dataType: 'jsonp',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    //alert(response.items[0].kind);
+                    var totalresult = response.pageInfo.totalResults;
+                    var resultperpage = response.pageInfo.resultsPerPage;
+
+                        var nextpagetoken = response.nextPageToken;
+                        if (nextpagetoken != undefined && nextpagetoken != "" && nextpagetoken != null)
+                        {
+                      
+                            $("#getmorevideos").attr("data-NextToken", response.nextPageToken)
+                            $("#getmorevideos").show();
+                            $("#getvideo").addClass("disabled");
+                        }
+                        else {
+                            $("#getmorevideos").hide();
+                        }
+
+                    $.each(response.items, function (position, value) {
+                        $(".title").append('<tr><td class="clstitle" data-description="' + value.snippet.description + '" data-thumbnail="' + value.snippet.thumbnails.high.url + '" data-date="' + value.snippet.publishedAt + '">' + value.snippet.title + '</td><td class="clsvideoId">' + value.id.videoId + '</td><td><button class="btn btn-sm primaryBtn pull-right btnsave" data-id="' + value.id.videoId + '" style="margin-right:15px;"><i class="fa fa-save" style="font-size:18px !important;"></i> Save Video</button></td></tr>');
+                    });
+        },
+            failure: function (response) {
+                alert(response.responseText);
+            },
+        error: function (response) {
+            alert(response.responseText);
+        }
+
+
+        });
+
+        })
+        );
+
+        $("body").on("click", ".btnsave", (function () {
+            var Id = $(this).closest("td").siblings(".clsvideoId").text();
+            var Title = $(this).closest("td").siblings(".clstitle").text();
+            var Description = $(this).closest("td").siblings(".clstitle").attr("data-description");
+            var ThumnailUrl = $(this).closest("td").siblings(".clstitle").attr("data-thumbnail");
+            var Date = $(this).closest("td").siblings(".clstitle").attr("data-date");
+            //alert(Id + Title + Description + ThumnailUrl);
+            //alert(Id);
+            $.ajax({
+                type: "POST",
+                url: "/AdminYTVideoInfo/SaveVideoInfo",
+                data: '{VideoId:"' + Id + '",VideoTitle:"' + Title + '",VideoDescription:"' + Description + '",ThumbnailUrl:"' + ThumnailUrl + '",Date:"'+ Date +'"}',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {                    
+                    if (response.status)
+                    {
+                        $(".btnsave[data-id='" + response.YTVideoId + "']").attr("display", "none");
+                        $(".btnsave[data-id='" + response.YTVideoId + "']").closest("td").html('<strong>Video Added</strong>');
+                        $(".hdnDate").val(response.date);
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+
+
+            });
+        })
+        );
+    </script>
+
+
+
+}

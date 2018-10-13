@@ -1,0 +1,75 @@
+﻿@model KishanBlog.Models.InterviewQuestions
+
+@{
+    ViewBag.Title = "Create Interview Question";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+    bool IsEdit = ViewBag.IsEdit;
+    int? Id = ViewBag.Id;
+}
+
+<link href="~/Content/BlogIndex.css" rel="stylesheet" />
+<link href="~/Content/Blog.css" rel="stylesheet" />
+
+@using (Html.BeginForm("CreateInterviewQuestion", "AdminInterviewQuestion", FormMethod.Post))
+{
+    <div class="block">
+        <div class="row margBtm">
+            <div class="col-md-10">
+                <h2>@(IsEdit ? "Edit Interview Question" : "Create Interview Question")</h2>
+            </div>
+        </div>
+        @Html.Hidden("IsEdit")
+        @Html.Hidden("Id")
+        @if (ViewBag.Msg != "" || ViewBag.Msg != null)
+        {
+
+
+            <div class="row alert @ViewBag.Status">
+                <div class="col-md-12">
+                    <span>@ViewBag.Msg</span>
+                </div>
+            </div>
+        }
+        <div class="row margBtm">
+            <div class="col-md-2">
+                <strong>Publish On:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.PublishOn, "", new { @class = "form-control", @placeholder= "mm/dd/yyyy*" })
+            </div>
+        </div>
+        <div class="row margBtm">
+            <div class="col-md-2">
+                <strong>Question:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.InterviewQuestion, "", new { @class = "form-control", @placeholder = "Interview Question*" })
+            </div>
+        </div>
+
+        <div class="row margBtm">
+            <div class="col-md-2">
+                <strong>Answer:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.InterviewQuestionLongDescription, new { @class = "form-control", @rows = "8" })
+            </div>
+        </div>
+        <div class="row margBtm">
+            <div class="col-md-offset-2 col-md-10">
+                <center><input type="submit" class="btn primaryBtn" value="Publish" /></center>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section scripts{
+<script src="~/Areas/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('InterviewQuestionLongDescription', {
+            height: 350,
+            width: 880,
+        });
+    </script>
+}

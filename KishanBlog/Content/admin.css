@@ -1,0 +1,25 @@
+﻿.clr {
+    color: red;
+}
+
+.mrgBtm {
+    margin-bottom: 20px;
+}
+
+.Box {
+    border: 2px solid #ccc;
+    height: auto;
+    width: 450px;
+    padding: 20px;
+    margin: 130px 314px;
+}
+
+.clrgreen {
+    color: green;
+}
+
+.primaryBtn{
+    color:white !important;
+    background-color:red !important;
+    border-color:gray !important;
+}

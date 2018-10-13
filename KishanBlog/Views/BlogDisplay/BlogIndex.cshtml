@@ -1,0 +1,88 @@
+﻿@model KishanBlog.Models.Blog
+@using System.Configuration;
+@using System.Data;
+@{
+    ViewBag.Title = "Oracle Blogs";
+    ViewBag.Description = "This page contains ample amount of blogs,youtube videos,interview questions,tips and tricks related to Oracle Pl/Sql.";
+    ViewBag.Keywords = "Plsql,PL/SQL,Blog,YouTube Videos,Oracle,Oracle 10g,Oracle plsql,Oracle pl/sql interview question,Oracle Tips and Tricks,Kishan Mashru,pl/sql syntax,Index,Kishan Mashru";
+    var Data = ViewBag.Data;
+    var pageSize = ViewBag.pageSize;
+    var version = ConfigurationManager.AppSettings["StaticVersion"].ToString();
+}
+<link href="~/Content/BlogIndex.css?v=@version" type="text/css" rel="stylesheet" />
+
+<div class="block">
+    <div class="row margBtm">
+        <div class="col-md-12">
+            <h1 class="redClr"><i class="fa fa-file-text-o"></i> Blogs</h1>
+        </div>
+    </div>
+
+    @if (Data != null || Data != "")
+    {
+        foreach (DataRow dr in Data.Rows)
+        {
+            <div class="row">
+                <div class="col-md-12">
+                    <div>                     
+                        <h4>
+                            <a href="@Url.Action("FullBlog","FullBlog",new {Id=dr["BlogId"]})" class="Title" style="font-size:2rem !important;">@dr["BlogTitle"]</a>
+                            @if (!DBNull.Value.Equals(dr["VideoId"]))
+                            {
+                                if (Convert.ToInt32(dr["VideoId"]) > 0)
+                                {
+                                    @*<span class="badge" style="background-color:red;">video</span>*@
+                                    <i class="fa fa-youtube-play" style="color:red; font-size:18px;" title="Contains YouTube video"> video</i>
+                                }
+                            }
+                        </h4>
+                        <p class="publishDetails">
+                            @dr["PublishOn"] by <span class="author">Kishan Mashru</span>@*<a href="#" class="like @ViewBag.likedClass" data-blogId="@dr["BlogId"]" data-type="0" data-LikeId="@ViewBag.LikeId"><span><i class="glyphicon glyphicon-thumbs-up"></i> Like</span></a><span class="count" style="margin-left:12px;"><c>@ViewBag.Count likes</c></span>*@
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @if (dr["BlogPic"].ToString() != "Images/default.png")
+                    {
+                        <div class="col-md-2">
+                            <a href="javascript:void(0)"><img src="~/@dr["BlogPic"].ToString()" height="100" width="160" /></a>
+                        </div>
+                    }
+                    <div class="@(dr["BlogPic"].ToString() != "Images/default.png" ? "col-md-10" : "col-md-12")">
+                        <p class="shortDescription">
+                            @dr["BlogShortDescription"]
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <hr style="border:1px solid #ccc; margin-bottom:30px; margin-top:30px;" />
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-lg-6">
+                <a href="@Url.Action("BlogIndex","BlogDisplay",new {Type="back",PS=pageSize})" id="Back" class="pull-left" style="visibility:@ViewBag.BackClass;"><span class="glyphicon glyphicon-arrow-up"></span> Back</a>
+            </div>
+            <div class="col-lg-6">
+                <a href="@Url.Action("BlogIndex","BlogDisplay",new {Type="load",PS=pageSize})" id="LoadMore" class="pull-right" style="visibility:@ViewBag.LoadClass;"><span class="glyphicon glyphicon-arrow-down"></span> Load More</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row alert alert-danger">
+            <div class="col-md-12">
+                <center><p>Oops! No blog's to show</p></center>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+
+}

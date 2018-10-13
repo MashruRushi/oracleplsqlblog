@@ -1,0 +1,191 @@
+﻿.Title {
+    font-size: 3rem;
+    color: #000000 !important;
+}
+
+.author {
+    color: red !important;
+}
+
+.publishDetails {
+    color: gray !important;
+    font-size: 1.4rem;
+}
+
+.shortDescription {
+    font-size: 18px !important;
+    font-family: Calibri !important;
+}
+
+.margBtm {
+    margin-bottom: 20px;
+}
+
+.glyphicon-remove-circle:hover {
+    color: red;
+}
+
+.like {
+    margin-left: 21px;
+    text-decoration: none !important;
+    color: black;
+}
+
+    .like:hover {
+        color: red;
+        text-decoration: none !important;
+    }
+
+.liked {
+    color: red !important;
+}
+
+#LoadMore {
+    color: blue !important;
+}
+
+.sidenavUl {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.nav > .active > a {
+    padding-left: 18px;
+    font-weight: 700;
+    color: red;
+    background-color: transparent;
+    border-left: 2px solid red;
+}
+
+li > a {
+    color: black;
+    font-weight: 400;
+}
+
+    li > a:hover {
+        color: red;
+    }
+
+.back-to-top {
+    padding-left: 12px;
+    color: black;
+}
+
+.affix-top {
+    position: fixed;
+    top: 35px;
+}
+
+.codediv {
+    width: 100%;
+    background-color: #ffffe1;
+    border: 1px solid #aaa;
+    border-spacing: 5px;
+    border-collapse: separate;
+    padding: 4px;
+    font-family: courier new,Courier,monospace;
+    font-size: 9pt;
+    overflow: auto;
+    margin-bottom: 20px;
+}
+
+.videoGrid {
+    padding-left: 4%;
+    height: 400px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.videoThumnail {
+    width: 30%;
+}
+
+.videoBio {
+    width: 70%;
+}
+
+.thumbnail {
+    width: 180px;
+    height: 100px;
+}
+
+.back {
+    padding-left: 5%;
+}
+
+@media screen and (max-width: 768px) {
+    	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { border: 1px solid #ccc; }
+	
+	td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+	}
+	
+	td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+	}    	
+}
+
+
+@media screen and (max-width: 420px) {
+    .mb-xs {
+        margin-bottom: 10%;
+    }
+
+    .back {
+        padding-left: 10%;
+    }
+
+    .load {
+        padding-right: 10%;
+    }
+
+    .videoGrid {
+        padding: 0% !important;
+        margin-top: 15% !important;
+        height: 600px !important;
+    }
+
+    .videoThumnail {
+        width: unset;
+        margin-bottom: 15px;
+    }
+
+    .videoBio {
+        width: unset;
+    }
+
+        .videoBio p {
+            margin-bottom: 0px;
+        }
+        .videoDetails {
+            margin-top: 15px;
+        }
+
+    .thumbnail {
+        width: 190px;
+        height: auto;
+    }
+}

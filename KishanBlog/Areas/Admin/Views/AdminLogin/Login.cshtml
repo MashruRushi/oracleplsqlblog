@@ -1,0 +1,66 @@
+﻿@model KishanBlog.Areas.Admin.Models.AdminLogin
+
+@{
+    Layout = null;
+    var name = ViewBag.name;
+    var password = ViewBag.password;
+}
+
+<meta name="viewport" content="width=device-width" />
+<title>Admin Login</title>
+<link href="~/Content/admin.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+@using (Html.BeginForm("Login", "AdminLogin", FormMethod.Post))
+{
+    <div class="container">
+        <div class="Box">
+            @*<div class="row">
+                <div class="col-md-12">
+                    <a href="@Url.Action("Register", "AdminRegistration")" class="pull-right">Register</a>
+                </div>
+            </div>*@
+            <div class="row mrgBtm">
+                <div class="col-md-12">
+                    <center><h1>Admin Login</h1></center>
+                </div>
+            </div>
+            <div class="row mrgBtm">
+                <div class="col-md-12">
+                    @Html.TextBoxFor(model => model.Email, "", new { @class = "form-control", @placeholder = "Email", @Value = name })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "clr" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.TextBoxFor(model => model.AdminPassword, "", new { @class = "form-control", @type = "Password", @placeholder = "password", @Value = password })
+                    @Html.ValidationMessageFor(model => model.AdminPassword, "", new { @class = "clr" })
+                    <span class="clr">@ViewBag.loginError</span>
+                </div>
+            </div>
+            <div class="row mrgBtm">
+                <div class="col-md-6">
+                    @Html.CheckBox("remember")<span>Remember</span>
+                </div>
+                @*<div class="col-md-6">
+                    <a href="@Url.Action("Recover","AdminRecoverPassword")" target="_blank">Forgotten Password?</a>
+                </div>*@
+            </div>
+            <div class="row mrgBtm">
+                <div class="col-md-12">
+                    <center><input type="submit" class="btn btn-default btn-lg primaryBtn" value="Log in" /></center>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <center><strong><p style="font-family:Calibri;">&copy; @DateTime.Now.Year Kishan Mashru's Blog. All rights reserved</p></strong></center>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>

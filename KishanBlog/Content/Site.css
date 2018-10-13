@@ -1,0 +1,105 @@
+﻿
+.logo {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 700;
+}
+
+.ftr {
+    PADDING: 15px;
+    background-color: #fff;
+    border-top: 1px solid #ececec;
+    color: #aaa;
+    left: 0;
+    padding: 1rem;
+    text-align: center;
+}
+
+/*AboutMe Page css*/
+
+.block {
+    background-color: #fff;
+    box-shadow: 0 1px #ececec;
+    padding: 40px;
+    padding: 4rem;
+    /* margin-bottom: 40px; */
+    /* margin-bottom: 4rem; */
+}
+
+.aboutMeHeaders {
+    color: red;
+    letter-spacing: 1px;
+}
+
+.aboutMeFontStyle {
+    background-color: #fff;
+    color: #333;
+    font-family: Calibri;
+    font-weight: 400;
+    line-height: 1.625;
+    font-size: 16px !important;
+}
+
+
+.clr {
+    color: white !important;
+    margin-left: 10px;
+}
+
+a:hover {
+    color: #EC1C24;
+}
+
+.upperTabClr {
+    color: gray !important;
+}
+
+.lowerTabsClr {
+    color: red !important;
+}
+
+.primaryBtn {
+    color: white;
+    background-color: red;
+    border-color: black;
+}
+
+.navbar-nav > li > a {
+    padding-top: 0px !important;
+}
+
+.navAdjustment {
+    padding-top: 0px !important;
+}
+
+.brandName {
+    font-size: 20px !important;
+    margin-top: 1.3% !important;
+    margin-left: 3% !important;
+}
+
+.dropdown-menu {
+    top: 54px !important;
+}
+
+.redClr {
+    color: red !important;
+}
+
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+    background-color: transparent !important;
+}
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a :focus {
+    background-color: transparent !important;
+    color: gray !important;
+}
+
+@media screen and (max-width: 992px) {
+    .block {
+        padding: 0px !important;
+        float: none;
+    }
+    .blogTitle{
+        font-size: 26px;
+    }
+}

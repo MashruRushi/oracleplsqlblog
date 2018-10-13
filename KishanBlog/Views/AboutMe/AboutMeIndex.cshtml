@@ -1,0 +1,77 @@
+﻿@model KishanBlog.Models.AboutMe
+
+@{
+    ViewBag.Title = "About Me";
+    ViewBag.Description = "Describes the content of this website and introduces author - Kishan Mashru";
+    ViewBag.Keywords = "Kishan Mashru's Blog,About Me,plsql,Pl/sql,PL/SQL,Blog,YouTube Videos,Oracle,Oracle 10g,Oracle plsql,Oracle pl/sql interview question,Oracle Tips and Tricks,Kishan Mashru,pl/sql syntax";
+}
+
+    
+
+<div class="block">
+    @*<iframe width="560" height="315" src="https://www.youtube.com/embed/hkyf77bgzoe" frameborder="0" allowfullscreen></iframe>*@ @*You tube iframe*@ 
+    <div class="row" style="margin-bottom:20px;">
+        <div class="col-lg-12">
+            <h1>
+                <span class="pull-left aboutMeHeaders"><i class="fa fa-cubes"></i> About This Blog</span>
+            </h1>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom:40px;">
+        <div class="col-md-12 col-lg-3">
+            <a href="javascript:void(0);">
+                <img src="~/Images/kishanmashru.png" class="img-responsive" alt="kishan mashru" onerror="this.onerror = null; this.src = '/Images/default.png'"/>
+            </a>
+        </div>
+        <div class="col-md-12 col-lg-9">
+            @if (ViewBag.aboutblog!=null)
+            {
+                <p class="aboutMeFontStyle">
+                   @Html.Raw(@ViewBag.aboutblog)
+                </p>
+            }
+            else { 
+            <p class="aboutMeFontStyle">
+                This blog contains tutorials and youtube videos on SQL and Oracle PL/SQL. The content of the blog will help beginners and experienced professionals on learning and understanding Oracle SQL and Oracle PL/SQL concepts easily. We tend to cover every topic of Oracle SQL and Oracle PL/SQL, but apart from that you will be able to learn advance topics which you may not find anywhere else, like using materialized views or say performance enhancement techniques etc.<br /><br />
+
+                All the information that we provide on our video tutorial are totally reliable, as we do verify them from various sources, and all the examples that we demonstrates are of the at most quality and standards. All the articles and video recording are created by experienced IT professional. We also have video on various interview questions that are asked to freshers as well as experienced professionals.
+            </p>
+            }
+            <h1>
+                <span class="aboutMeHeaders">About Kishan Mashru</span>
+            </h1>
+            @if (ViewBag.aboutexperience != null)
+            {
+                <p class="aboutMeFontStyle">
+                   @Html.Raw(@ViewBag.aboutexperience)
+                </p>
+            }
+            else { 
+            <p class="aboutMeFontStyle">
+                <span style="color:red;">Kishan Mashru</span> has 4+ years of experience in working with Oracle database. He has worked on end- to - end project implementation from requirement analysis to deployment.
+            </p>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <img src="~/Images/OCP_PLSQL_eCertificate.jpg" class="img-responsive" alt="kishan mashru" height="300" />
+        </div>
+
+        <div class="col-lg-4">
+            <img src="~/Images/SQL_EXPERT_eCertificate-1.jpg" class="img-responsive" alt="kishan mashru" height="300" />
+        </div>
+        <div class="col-lg-4">
+            <img src="~/Images/OCA_DBA_eCertificate-1.jpg" class="img-responsive" alt="kishan mashru" height="300" />
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script>
+    $(document).ready(function () {
+        $(".block p").addClass("aboutMeFontStyle");
+    });
+</script>
+}
+ 

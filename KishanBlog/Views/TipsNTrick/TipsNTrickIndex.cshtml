@@ -1,0 +1,106 @@
+﻿@model KishanBlog.Models.TipsNTricks
+@using System.Data;
+
+@{
+    ViewBag.Title = "Tips & Tricks";
+    ViewBag.Description = "This page provides intresting and very usefull oracle pl/sql tips and tricks.";
+    ViewBag.Keywords = "Plsql,PL/SQL,Blog,Oracle,Oracle 10g,Oracle plsql,Oracle pl/sql interview question,Oracle Tips and Tricks,Kishan Mashru,pl/sql syntax,helps,pl/sql tips and tricks";
+    var TTData = ViewBag.TTData;
+}
+
+<link href="~/Content/BlogIndex.css" rel="stylesheet" />
+
+
+<div class="block">
+    <div class="row margBtm">
+        <div class="col-md-12">
+            <h1 class="redClr"><i class="fa fa-star"></i> Oracle Tips & Trick</h1>
+        </div>
+    </div>
+    @if (TTData != null && TTData.Rows.Count > 0)
+    {
+        foreach (DataRow dr in TTData.Rows)
+       {
+            <div class="row">                 
+                <div class="col-md-12 alert alert-info">         
+                        <span class="FirstPNode" style="color:black;">@Html.Raw(dr["TipsNTrickTitle"])</span> 
+                    <div class="shortDescription detail" id="@dr["TipsNTrickId"]" style="margin-top:15px !important;">
+                         @Html.Raw(dr["TipsNTrickLongDescription"])
+                    </div>
+                    @if(!string.IsNullOrEmpty(dr["TipsNTrickLongDescription"].ToString()))
+                    { 
+                    <div class="cls" style="margin-bottom:30px !important; margin-top:15px !important;">
+                        <span class="pull-right"> <a href="#" class="closes" data-id="@dr["TipsNTrickId"]"><span class="glyphicon glyphicon-arrow-up"></span> close</a></span>
+                    </div>
+                    <div class="opn" style="margin-bottom:30px !important; margin-top:15px !important;">
+                        <span class="pull-right"> <a href="javascript:void(0)" class="more" data-id="@dr["TipsNTrickId"]"><span class="glyphicon glyphicon-arrow-down"></span> Read More</a></span>
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <hr style="border:1px solid #ccc; margin-bottom:30px; margin-top:30px;" />
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="row">
+            <div class="alert alert-danger">
+                <span>No Data Found</span>
+            </div>
+        </div>
+    }
+    @*<div class="row">
+            <div class="col-md-12 alert alert-info">
+                <p class="shortDescription" style="color:black;">
+                    <span class="glyphicon glyphicon-star" style="color:red;"></span> Oracle Database Tips by Burleson Consulting ... databases and there are many tips and tricks for using Oracle database and ... Intelligent Oracle database 10g DBA Maintenance ... Oracle DBA Database Administration Training Course
+                </p>
+                <div class="shortDescription detail" id="2" style="margin-top:15px !important;">
+                    Oracle database 10g is the world's most popular relational databases and there are many tips and tricks for using Oracle database and optimizing Oracle database administration.  Here are my notes on Oracle database tuning:
+                </div>
+                <div class="cls" style="margin-bottom:30px !important; margin-top:15px !important;">
+                    <span class="pull-right"> <a href="#" class="closes" data-id="2"><span class="glyphicon glyphicon-arrow-up"></span> close</a></span>
+                </div>
+                <div class="opn" style="margin-bottom:30px !important; margin-top:15px !important;">
+                    <span class="pull-right"> <a href="#" class="more" data-id="2"><span class="glyphicon glyphicon-arrow-down"></span> Read More</a></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr style="border:1px solid #ccc; margin-bottom:30px; margin-top:30px;" />
+            </div>
+        </div>*@
+</div>
+
+
+
+@section scripts{
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('p').addClass('shortDescription');
+            $('.FirstPNode p').prepend('<span class="glyphicon glyphicon-star" style="color:red; margin-right:5px;"></span>');
+            $('.detail').hide();
+            $('.cls').hide();
+            $('.more').click(function () {
+                $(this).focus();
+                var x = $(this).attr('data-id');
+                $('#' + x).show("slow");
+                $(this).closest("div").hide();
+                $(this).closest("div").prev("div").show();
+            });
+            $('.closes').click(function () {
+                $(this).focus();
+                var x = $(this).attr('data-id');
+                $('#' + x).hide("slow");
+                $(this).closest("div").hide();
+                $(this).closest("div").next("div").show();
+            });
+        });
+    </script>
+}

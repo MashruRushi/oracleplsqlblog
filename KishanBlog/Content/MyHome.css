@@ -1,0 +1,70 @@
+﻿body {
+}
+
+a {
+    color: black;
+    cursor: pointer;
+}
+
+.mt-50 {
+    margin-top: 55px;
+}
+
+.BlogBox {
+    border: 2px solid #ccc;
+    height: auto;
+    width: 450px;
+    padding: 20px;
+    background-color: aliceblue;
+}
+
+.VideoBox {
+    border: 2px solid #ccc;
+    height: auto;
+    width: 450px;
+    padding: 20px;
+    background-color: aliceblue;
+}
+
+.TutorialBox {
+    border: 2px solid #ccc;
+    height: auto;
+    width: 450px;
+    padding: 20px;
+    background-color: aliceblue;
+}
+
+.InterViewQuestionBox {
+    border: 2px solid #ccc;
+    height: auto;
+    width: 450px;
+    padding: 20px;
+    background-color: aliceblue;
+}
+
+@media screen and (max-width: 992px) {
+
+    .mt-50 {
+        margin-top: 0px;
+    }
+
+    .BlogBox {
+        border: 0px;
+        width: unset;
+    }
+
+    .VideoBox {
+        border: 0px;
+        width: unset;
+    }
+
+    .TutorialBox {
+        border: 0px;
+        width: unset;
+    }
+
+    .InterViewQuestionBox {
+        border: 0px;
+        width: unset;
+    }
+}

@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="~/Images/KMIcon.png" />
+    <title>@ViewBag.Title</title>
+    @*@System.Web.Optimization.Styles.Render("~/Content/css")
+        @System.Web.Optimization.Scripts.Render("~/bundles/modernizr")*@
+    <link href="~/Content/Site.css" rel="stylesheet" />    
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />    
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />    
+
+</head>
+<body>
+    <nav class="navbar navbar-default" style="background-color:#EC1C24; color:white !important; margin-bottom:0px;">
+        <div class="container-fluid" style="">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header brandName">
+                <strong>Admin KishanMashru's Blog</strong>
+            </div>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="collapse-1" style="margin-left:30%;">
+                <ul class="nav navbar-nav upperTab">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle clr navAdjustment" 
+                           data-toggle="dropdown"
+                           href="javascript:void(0)" style="font-size:14px; top:18px"><i class="glyphicon glyphicon-th-large" style="font-size:14px; padding-right:10px;"></i>BLOG<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li style="font-size:14px; padding-right:10px;">@Html.ActionLink(" CREATE BLOG", "CreateBlog", "PublishBlog", null, new { @class = "redClr fa fa-plus" })</li>
+                            <li style="font-size:14px; padding-right:10px;">@Html.ActionLink(" EDIT BLOG", "EditBlogIndex", "EditBlog", null, new { @class = "redClr fa fa-pencil" })</li>
+                        </ul>
+                    </li> 
+                    <li class="dropdown">
+                        <a class="dropdown-toggle clr navAdjustment"
+                           data-toggle="dropdown"
+                           href="javascript:void(0)" style="font-size:14px; top:18px"><i class="glyphicon glyphicon-hd-video" style="font-size:14px; padding-right:10px;"></i>VIDEO<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li style="font-size:14px; padding-right:10px;">@Html.ActionLink(" ADD VIDEOS", "YTVideoInfoIndex", "AdminYTVideoInfo", "", new { @class = "redClr fa fa-plus" })</li>
+                            @*<li style="font-size:14px; padding-right:10px;">@Html.ActionLink(" ", "EditBlogIndex", "EditBlog", "", new { @class = "redClr fa fa-pencil" })</li>*@
+                        </ul>
+                    </li> 
+                    <li class="dropdown">
+                        <a class="dropdown-toggle clr navAdjustment"
+                           data-toggle="dropdown"
+                           href="javascript:void(0)" style="font-size:14px; top:18px"><i class="glyphicon glyphicon-tag" style="font-size:14px; padding-right:10px;"></i>TUTORIAL<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li style="font-size:14px; padding-right:10px;">@Html.ActionLink(" CREATE TUTORIAL", "AdminOracleTutorialsCreate", "AdminOracleTutorials", "", new { @class = "redClr fa fa-plus" })</li>
+                            <li style="font-size:14px; padding-right:10px;">@Html.ActionLink(" EDIT TUTORIAL", "OracleTutorialList", "EditOracleTutorials", null, new { @class = "redClr fa fa-pencil" })</li>
+                        </ul>
+                    </li>       
+                    <li class="dropdown">
+                        <a class="dropdown-toggle clr navAdjustment"
+                           data-toggle="dropdown"
+                           href="javascript:void(0)" style="font-size:14px; top:18px"><i class="fa fa-star" style="font-size:14px; padding-right:10px;"></i>CHECK LIST<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li style="font-size:14px; padding-right:10px;">@Html.ActionLink(" CREATE INTERVIEW QUESTION", "CreateInterviewQuestion", "AdminInterviewQuestion", null, new { @class = "redClr fa fa-plus" })</li>
+                            <li style="font-size:14px; padding-right:10px;">@Html.ActionLink(" EDIT INTERVIEW QUESTION", "EditInterviewQuestionIndex", "EditInterviewQuestion", null, new { @class = "redClr fa fa-pencil" })</li>
+                            <li class="divider"></li>
+                            <li style="font-size:14px; padding-right:10px;">@Html.ActionLink(" CREATE TIPS & TRICK", "AdminTipsNTrickIndex", "AdminTipsNTricK", null, new { @class = "redClr fa fa-plus" })</li>
+                            <li style="font-size:14px; padding-right:10px;">@Html.ActionLink(" EDIT TIPS & TRICK", "EditTipsNTrickIndex", "EditTipsNTrick", null, new { @class = "redClr fa fa-pencil" })</li>
+                            <li class="divider"></li>
+                            <li style="font-size:14px; padding-right:10px;"><i class="glyphicon glyphicon-user" style="top:22px;"></i>@Html.ActionLink(" CMMENTS & REPLY", "EditCommentsIndex", "EditComments", null, new { @class = "redClr fa fa-comment" })</li>
+                            <li style="font-size:14px; padding-right:10px;"><i class="glyphicon glyphicon-user" style="top:22px;"></i>@Html.ActionLink(" USERS", "UserListIndex", "AdminUserList", null, new { @class = "redClr fa fa-user" })</li>
+                        </ul>
+                    </li>  
+                    @*<li class="dropdown">
+                        <a class="dropdown-toggle clr navAdjustment"
+                           data-toggle="dropdown"
+                           href="#" style="font-size:14px; top:18px"><i class="glyphicon glyphicon-hd-video" style="font-size:14px; padding-right:10px;"></i>INTERVIEW QUESTIONS<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li style="font-size:14px; padding-right:10px;">@Html.ActionLink(" CREATE INTERVIEW QUESTION", "CreateInterviewQuestion", "AdminInterviewQuestion", null, new { @class = "redClr fa fa-plus" })</li>
+                            <li style="font-size:14px; padding-right:10px;">@Html.ActionLink(" EDIT INTERVIEW QUESTION", "EditInterviewQuestionIndex", "EditInterviewQuestion", null, new { @class = "redClr fa fa-pencil" })</li>
+                        </ul>
+                    </li>*@                                      
+                    <li style="font-size:14px; padding-right:10px; padding-left:25px;"><i class="glyphicon glyphicon-user" style="top:19px;"></i>@Html.ActionLink(" DYNAMIC ABOUT ME", "AboutMeIndex", "AdminAboutMe", null,new { @class = "clr navAdjustment" })</li>                                      
+                    <li style="font-size:14px; padding-right:10px; padding-left:25px;"><i class="glyphicon glyphicon-log-out" style="top:19px;"></i>@Html.ActionLink(" SIGNOUT", "SignOut", "AdminSignOut", null, new { @class = "clr navAdjustment" })</li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    @*<div class="row" style="height:120px; margin-top:16px; padding-left:5%;">
+            <div class="col-lg-12">
+                <span class="pull-left logo"><a href="#" style="color:black"><img src="~/Images/Logo.png" alt="KishanMashru's Blog" title="Logo" /></a></span>
+            </div>
+        </div>*@
+
+    @*<nav class="navbar navbar-inverse" style="border-radius:0px;">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div>
+                <ul class="nav navbar-nav pull-right lowerTabsClr" style="color:white; margin-right:5%;">
+                    <li style="font-size:16px; padding-right:5px;"><i class="glyphicon glyphicon-file" style="top:24px"></i>@Html.ActionLink(" BLOG", "AboutUS", "AboutUS", new { @class = "clr" })</li>
+                    <li style="font-size:16px; padding-right:5px;"><i class="glyphicon glyphicon-hd-video" style="top:24px"></i>@Html.ActionLink(" YOUTUBE VIDEOS", "CustomizeSearch", "CustomizeSearch", new { @class = "clr" })</li>
+                    <li style="font-size:16px; padding-right:5px;"><i class="glyphicon glyphicon-user" style="top:24px"></i>@Html.ActionLink(" ABOUT ME", "AboutMeIndex", "AboutMe", "", new { @class = "clr" })</li>
+                    <li style="font-size:16px; padding-right:5px;"><i class="glyphicon glyphicon-home" style="top:24px"></i>@Html.ActionLink(" MYHOME", "CollegeSearchDetails", "CollegeSearchDetails", new { @class = "clr" })</li>
+
+
+                    @if (Session["Email"] != null && Session["Email"].ToString() != string.Empty)
+                    {
+                        <li style="font-size:16px; padding-right:5px;"><i class="glyphicon glyphicon-log-out" style="top:24px"></i>@Html.ActionLink(" SIGNOUT", "Login", "Login", "", new { @class = "clr" })</li>
+                    }
+                    else
+                    {
+                        <li style="font-size:16px; padding-right:5px;"><i class="glyphicon glyphicon-log-in" style="top:24px"></i>@Html.ActionLink(" LOGIN", "Login", "Login", "", new { @class = "clr" })</li>
+                    }
+
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </nav>*@
+    <div class="container">
+        @RenderBody()
+    </div>
+    <footer class="ftr">
+        <center><strong><p style="font-family:Calibri;">&copy; @DateTime.Now.Year Kishan Mashru's Blog. All rights reserved</p></strong></center>
+    </footer>
+    @*@System.Web.Optimization.Scripts.Render("~/bundles/jquery")
+    @System.Web.Optimization.Scripts.Render("~/bundles/bootstrap")*@
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/Site.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js" integrity="sha256-EgPuQS+2I8bm2u3b3r1dJUEiO56a/xeZGXiTnNTvYZM=" crossorigin="anonymous"></script>    
+ 
+</body>
+</html>

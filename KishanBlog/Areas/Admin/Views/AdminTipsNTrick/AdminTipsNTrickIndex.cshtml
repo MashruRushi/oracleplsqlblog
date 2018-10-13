@@ -1,0 +1,79 @@
+﻿@model KishanBlog.Models.TipsNTricks
+@using System.Data;
+
+@{
+    ViewBag.Title = "Admin Tips & Trick";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+    bool IsEdit = ViewBag.IsEdit;
+    int? Id = ViewBag.Id;
+}
+
+<link href="~/Content/Blog.css" rel="stylesheet" />
+
+@using (Html.BeginForm("AdminTipsNTrickIndex", "AdminTipsNTrick", FormMethod.Post))
+{
+    <div class="block">
+        <div class="row margBtm">
+            <div class="col-md-10">
+                <h2>@(IsEdit ? "Edit Tips & Trick" : "Create Tips & Trick")</h2>
+            </div>
+        </div>
+        @Html.Hidden("IsEdit")
+        @Html.Hidden("Id")
+
+        @if (ViewBag.Msg != "" || ViewBag.Msg != null)
+        {
+
+
+            <div class="row alert @ViewBag.Status">
+                <div class="col-md-12">
+                    <span>@ViewBag.Msg</span>
+                </div>
+            </div>
+        }
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>Publish Date:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.PublishOn, "", new { @class = "form-control", @placeholder = "mm/dd/yyyy*" })                
+            </div>
+        </div>
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>Tip:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.TipsNTrickTitle, new { @class = "form-control", @rows = "4" })               
+            </div>
+        </div>
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>Description:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.TipsNTrickLongDescription, new { @class = "form-control", @rows = "8" })                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-2 col-md-10">
+                <center><input type="submit" class="btn btn-default primaryBtn" value="Publish" /></center>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+<script src="~/Areas/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('TipsNTrickLongDescription', {
+            height: 350,
+            width: 880,
+        });
+
+        CKEDITOR.replace('TipsNTrickTitle', {
+            height: 150,
+            width: 880,
+        });
+    </script>
+}

@@ -1,0 +1,111 @@
+﻿@using System.Data;
+@{
+    ViewBag.Title = "Home";
+    ViewBag.Description = "This Blog covers ample number of topics related to oracle pl/sql.Including video explanations,tutorials and frequently asked interview questions along with intresting tips and tricks";
+    ViewBag.Keywords = "PL/SQL,Blog,YouTube Videos,Oracle,Oracle 10g,Oracle plsql,Oracle pl/sql interview question,Oracle Tips and Tricks,Kishan Mashru,pl/sql syntax,Home,Index,Home Page,page";
+    var BlogList = ViewBag.BlogList;
+    var VideoList = ViewBag.VideoList;
+    var TutorialList = ViewBag.TutorialList;
+    var InterviewQuestionList = ViewBag.InterviewQuestionList;
+    var TipsNTrick = ViewBag.TipsNTrick;
+}
+
+<link href="~/Content/BlogIndex.css" rel="stylesheet" />
+<link href="~/Content/MyHome.css" rel="stylesheet" />
+
+<div class="block">
+    <div class="row margBtm">
+        <div class="col-md-12">
+            <h1 class="redClr"><i class="fa fa-home"></i> Home</h1>
+        </div>
+    </div>
+    @if (TipsNTrick != null)
+    {
+        <div class="row hidden-sm hidden-xs">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    <center><h4>@Html.Raw(TipsNTrick)</h4></center>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mt-50"><h4><strong>Recently Posted Blogs</strong></h4></div>
+            <div class="BlogBox">
+                @if (BlogList.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in BlogList.Rows)
+                    {
+                        <p><a href="@Url.Action("FullBlog", "FullBlog", new { Id = Convert.ToInt16(dr["BlogId"]) })">@dr["BlogTitle"]</a></p>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <p>No Data Found</p>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mt-50"><h4><strong>Recently Posted Videos</strong></h4></div>
+            <div class="VideoBox">
+                @if (VideoList.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in VideoList.Rows)
+                    {
+                        <p><a href="@Url.Action("YouTubeVideoGridIndex", "YouTubeVideoGrid")">@dr["VideoTitle"]</a></p>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <p>No Data Found</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div style="margin-top:55px !important;"><h4><strong>Recently Posted Oracle Tutorials</strong></h4></div>
+            <div class="TutorialBox">
+                @if (TutorialList.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in TutorialList.Rows)
+                    {
+                        <p><a href="@Url.Action("OracleTutorialsIndex", "OracleTutorials", new { Id = Convert.ToInt16(dr["TutorialID"]) })">@dr["TutorialTitle"]</a></p>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <p>No Data Found</p>
+                    </div>
+                }
+            </div>
+        </div>
+        @*<div class="col-md-6">
+            <div style="margin-top:55px !important;"><h4><strong>Recently Posted Interview Question</strong></h4></div>
+            <div class="InterViewQuestionBox">
+                @if (InterviewQuestionList.Rows.Count > 0)
+            {
+                foreach (DataRow dr in InterviewQuestionList.Rows)
+                {
+                        <p><a href="@Url.Action("InterviewQuestionIndex", "InterviewQuestion", new { Id = Convert.ToInt16(dr["InterviewQuestionId"]) })">@dr["InterviewQuestion"]</a></p>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <p>No Data Found</p>
+                    </div>
+                }
+            </div>
+        </div>*@
+    </div>
+</div>
+@section scripts{
+
+}

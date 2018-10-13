@@ -1,0 +1,133 @@
+﻿@model KishanBlog.Models.OracleTutorials
+@using System.Data;
+
+@{
+    ViewBag.Title = "Oracle Tutorials Index";
+    ViewBag.Description = "Oracle Tutorials contains progressive tutorials including meaningfull examples and source code.";
+    ViewBag.Keywords = "Plsql,PL/SQL,Blog,YouTube Videos,Oracle,Oracle 10g,Oracle plsql,Oracle pl/sql interview question,Oracle Tips and Tricks,Kishan Mashru,pl/sql syntax,introduction to oracle plsql,source code,pl/sql qquery,plsql with examples";
+    var Data = ViewBag.OTData;
+}
+
+<link href="~/Content/BlogIndex.css" rel="stylesheet" />
+
+<div class="block" id="top">
+    <div class="row" style="margin-bottom:15px;">
+        <div class="col-md-12">
+            <h1 class="redClr"><i class="fa fa-th-large"></i> Oracle Tutorials</h1>
+        </div>
+    </div>
+    @if (Data != null && Data.Rows.Count > 0)
+    {
+        <div class="row">
+            <div class="col-md-9 main">
+                @foreach (DataRow dr in Data.Rows)
+                {
+                    <div id="@(Convert.ToInt16(dr["TutorialID"]))" class="margBtm">
+                        <h2 style="padding-top:20px; padding-bottom:10px;">@dr["TutorialTitle"]</h2>
+                        <hr style="border:1px solid #ccc;"/>
+                        <p>
+                            @Html.Raw(dr["TutorialDescription"])
+                        </p>
+                    </div>
+                }              
+            </div>
+
+            <div class="col-md-3" role="complementary">
+                <nav class="">
+                    <ul class="nav" id="sidemenu">
+                        @foreach (DataRow dr in Data.Rows)
+                        {
+                            <li class="">
+                                <a href="#@(Convert.ToInt16(dr["TutorialID"]))">@dr["TutorialTabName"]</a>
+                            </li>
+                        }                       
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="alert alert-danger">
+                <span>No Data Found</span>
+            </div>
+        </div>
+    }
+</div>
+@section scripts{
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script>
+            //$(document).ready(function () {
+            //    var sm = $('.sidemenu').position();
+            //    $(window).scroll(function () {
+            //        var windowpos = $(this).scrollTop();
+            //        if (windowpos >= sm.top - 100) {
+            //            $('.sidemenu .nav').addClass('affix-top');
+            //        }
+            //        else {
+            //            $('.sidemenu .nav').removeClass('affix-top');
+            //        }
+            //    });
+
+            //    //$('li').click(function () {
+            //    //    $('li').removeClass('active');
+            //    //    $(this).addClass('active');
+            //    //});
+            //});
+
+            // Cache selectors
+            var lastId,
+                topMenu = $("#sidemenu"),
+                // All list items
+                menuItems = topMenu.find("a"),
+                // Anchors corresponding to menu items
+                scrollItems = menuItems.map(function () {
+                    var item = $($(this).attr("href"));
+                    if (item.length) { return item; }
+                });
+
+            // Bind click handler to menu items
+            // so we can get a fancy scroll animation
+            menuItems.click(function (e) {
+                var href = $(this).attr("href"),
+                    offsetTop = href === "#" ? 0 : $(href).offset().top - 15;
+                $('html, body').stop().animate({
+                    scrollTop: offsetTop
+                }, 300);
+                e.preventDefault();
+            });
+
+            // Bind to scroll
+            $(window).scroll(function () {
+                // Get container scroll position
+                var fromTop = $(this).scrollTop();
+                var sm = $(".col-md-3").offset().top;
+                if (fromTop + 50 >= sm) {
+                    $('#sidemenu').parent().addClass('affix-top');
+                }
+                else {
+                    if ($('#sidemenu').parent().hasClass('affix-top')) {
+                        $('#sidemenu').parent().removeClass('affix-top');
+                    }
+                }
+                // Get id of current scroll item
+                var cur = scrollItems.map(function () {
+                    if (($(this).offset().top) <= (fromTop + 25))
+                        return this;
+                });
+                // Get the id of the current element
+                cur = cur[cur.length - 1];
+                var id = cur && cur.length ? cur[0].id : "";
+
+                if (lastId !== id) {
+                    lastId = id;
+                    // Set/remove active class
+                    menuItems
+                      .parent().removeClass("active")
+                      .end().filter("[href='#" + id + "']").parent().addClass("active");
+                }
+            });
+    </script>
+
+}

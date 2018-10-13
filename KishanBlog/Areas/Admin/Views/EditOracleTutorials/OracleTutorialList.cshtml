@@ -1,0 +1,125 @@
+﻿@model KishanBlog.Models.OracleTutorials
+@using System.Data;
+
+@{
+    ViewBag.Title = "Oracle Tutorial List";
+    var OracleTutorialsList = ViewBag.OracleTutorialsList;
+}
+
+<style>
+    .placeholder {
+        border: 1px solid #00ff21;
+        background-color: #ccc;
+    }
+</style>
+
+
+<link href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+
+<div class="block">
+    <div class="row" style="margin-bottom:30px;">
+        <div class="col-md-12">
+            <h1>Oracle Tutorials List</h1>
+        </div>
+    </div>
+    <div id="Message" class="row alert" style="display:none;">
+        <div class="col-md-12">
+            <span></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-hover" id="datatable">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Tab Name</th>
+                        <th>Title</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (DataRow dr in OracleTutorialsList.Rows)
+                    {
+                        <tr>
+                            <td data-DisplayOrder="@dr["DisplayOrder"]">@dr["TutorialID"]</td>
+                            <td>@dr["TutorialTabName"]</td>
+                            <td><a href="@Url.Action("AdminOracleTutorialsCreate","AdminOracleTutorials",new {Id=dr["TutorialID"] })">@dr["TutorialTitle"]</a></td>
+                            <td>
+                                <a href="@Url.Action("AdminOracleTutorialsCreate","AdminOracleTutorials",new {Id=dr["TutorialID"] })" style="margin-right:5px;"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                                @if (!Convert.ToBoolean(dr["IsDelete"]))
+                                {
+                                    <a href="@Url.Action("DeleteTutorial","EditOracleTutorials",new {Id=dr["TutorialID"] })"><span class="glyphicon glyphicon-remove"></span> Delete</a>
+                                }
+                                else
+                                {
+                                    <span style="color:red;"><b>Deleted</b></span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+  
+@section Scripts{
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('tbody').sortable({
+
+                placeholder: 'placeholder',
+                axis: 'y',
+                opacity:'0.5',
+                cursor: 'crosshair',
+                update: function (event, ui) {
+                    var IDs = "";
+                    var DisplayOrder = "";
+                    IDs =  $('tbody tr td:first-child').map(function (index, element) {
+                            return $(this).text();
+                            }).get().join(',');
+                    //alert(IDs);
+                    DisplayOrder = $('tbody tr td:first-child').map(function (index, element) {
+                        return $(this).attr("data-DisplayOrder");
+                    }).get().join(',');
+                    //alert(DisplayOrder);
+
+                    $.ajax({
+
+                        type: "POST",
+                        url: "/EditOracleTutorials/UpdateDisplayOrder",
+                        data: '{TutorialIDs:"' + IDs + '",DisplayOrder:"' + DisplayOrder + '"}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if(response.Status)
+                            {
+                                $('#Message').show().addClass('alert-success');
+                                $('#Message').find('span').text("Oracle Tutorials Display Order Sorted Successfully");
+                            }
+                            else {
+                                $('#Message').show().addClass('alert-danger');
+                                $('#Message').find('span').text("Oops! something went wrong");
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+
+
+                }                
+            });
+
+        });
+    </script>
+}
+
+

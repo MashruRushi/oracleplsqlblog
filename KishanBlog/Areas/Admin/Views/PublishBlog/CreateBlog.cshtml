@@ -1,0 +1,214 @@
+﻿@model KishanBlog.Models.Blog
+
+@{
+    ViewBag.Title = "Create Blog";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+    bool IsEdit = ViewBag.IsEdit;
+    int? Id = ViewBag.Id;
+}
+
+<link href="~/Content/Blog.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-tokenfield.css" rel="stylesheet" />
+
+@using (Html.BeginForm("CreateBlog", "PublishBlog", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="block">
+        <div class="row" style="margin-bottom:30px;">
+            <div class="col-md-12">
+                <h1>@(IsEdit ? "Edit Blog" : "Create Blog")</h1>
+            </div>
+        </div>
+        @Html.Hidden("IsEdit")
+        @Html.Hidden("Id")
+        @Html.HiddenFor(model => model.VideoId)
+        @if (ViewBag.Msg != "" || ViewBag.Msg != null)
+        {
+            <div class="row alert @ViewBag.Status">
+                <div class="col-md-12">
+                    <span>@ViewBag.Msg</span>
+                </div>
+            </div>
+        }
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>Blog Image:</strong>
+            </div>
+            <div class="col-md-5">
+                <img id="BlogPic" src="@ViewBag.ImageData" alt="Blog Image" class="img-responsive img mrgBtm" width="300" height="300" />
+                <input type="file" name="BlogPicUpload" id="BlogPicUpload" class="btn btn-info btn-sm" />
+            </div>
+            <div class="col-md-5">
+                <label>Upload images which are required in this article</label>
+                <input type="file" name="ArticlePicUpload" id="ArticlePicUpload" class="btn btn-info btn-sm" />
+                <div id="ImageNameBox" style="border:0px; margin-top:10px;">                               
+                </div>
+            </div>
+        </div>
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>Publish Date:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.PublishOn, "", new { @class = "form-control datetimepicker", @placeholder = "mm/dd/yyyy*" })
+                @Html.ValidationMessageFor(model => model.PublishOn, "", new { @class = "clrval" })
+            </div>
+        </div>
+
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>YouTube Video Id:</strong>
+            </div>
+            <div class="col-md-10">
+                @*@Html.TextBoxFor(model => model.YtVideoId, "", new { @class = "form-control datetimepicker", @placeholder = "YouTube video Id" })
+                @Html.ValidationMessageFor(model => model.YtVideoId, "", new { @class = "clrval" })*@
+                @Html.DropDownListFor(model => model.YtVideoId,new SelectList(Model.ListVideo, "YtVideoId", "YtVideoTitle",!string.IsNullOrWhiteSpace(Model.YtVideoId)?Model.YtVideoId:"0"),"--select video--",new {@class="form-control" })
+            </div>
+        </div>
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>YouTube Video Url:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.YtVideoUrl, "", new { @class = "form-control datetimepicker", @placeholder = "YouTube video Url" })
+                @Html.ValidationMessageFor(model => model.YtVideoUrl, "", new { @class = "clrval" })
+            </div>
+        </div>
+
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>Title:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.BlogTitle, "", new { @class = "form-control", @placeholder = "Title*" })
+                @Html.ValidationMessageFor(model => model.BlogTitle, "", new { @class = "clrval" })
+            </div>
+        </div>
+
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>Tags:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Tags, new { @class = "form-control", @placeholder = "Tags*", @rows = "4" })
+                @Html.ValidationMessageFor(model => model.Tags, "", new { @class = "clrval" })
+            </div>
+        </div>
+
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>Description:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.BlogShortDescription, new { @class = "form-control", @placeholder = "Short Description...*", @rows = "8" })
+                @Html.ValidationMessageFor(model => model.BlogShortDescription, "", new { @class = "clrval" })
+            </div>
+        </div>
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>Article:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.BlogLongdescription, new { @class = "form-control", @rows = "8" })
+                @Html.ValidationMessageFor(model => model.BlogLongdescription, "", new { @class = "clrval" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-2 col-md-10">
+                <center><input type="submit" class="btn btn-default primaryBtn @(!string.IsNullOrWhiteSpace(ViewBag.DisableBtn) ? ViewBag.DisableBtn : "")" value="Publish" /></center>
+            </div>
+        </div>
+    </div>
+
+
+}
+    
+
+@section Scripts{
+<script src="~/Areas/ckeditor/ckeditor.js"></script>
+<script src="~/Scripts/bootstrap-tokenfield.min.js"></script>
+
+    <script>
+        CKEDITOR.replace('BlogLongdescription', {
+            height: 350,
+            width: 880,
+        });      
+
+        $(document).ready(function () {
+
+            $('#Tags').tokenfield({
+            })
+
+            function readURL(input) {                
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        //alert(e.target.result);
+                        $('#BlogPic').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#BlogPicUpload").change(function () {
+                readURL(this);
+            });
+
+            function SaveImage(input) {
+
+                var formData = new FormData();
+                var totalFiles = document.getElementById("ArticlePicUpload").files.length;
+
+                for (var i = 0; i < totalFiles; i++) {
+                    var file = document.getElementById("ArticlePicUpload").files[i];
+
+                    formData.append("ArticlePicUpload", file);
+                }
+                if (input.files && input.files[0]) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/PublishBlog/Upload",
+                        data: formData,
+                        dataType: 'json',
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {                            
+                            if (response != null || response != "" || response != undefined) {
+                                if (response.status = true) {
+                                    $("#ImageNameBox").css("border","1px solid black");
+                                    $('#ImageNameBox').append('<div class="alert alert-success"><a href="#" class="Delete"><span style="color:red; cursor:pointer;" class="glyphicon glyphicon-remove pull-right" title="remove"></span></a><span class="imagename">' + response.filename + '</span></div>');
+                                }
+                                else
+                                {
+                                    alert('oops! something went wrong');
+                                }
+                            }
+
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+
+
+                    });
+                }
+            }
+
+            $("#ArticlePicUpload").change(function () {
+                SaveImage(this);
+            });                    
+
+        });
+
+    </script>
+    <script>
+        $(".Delete").click(function () {            
+            //alert('pk');
+        });
+    </script>
+}
+

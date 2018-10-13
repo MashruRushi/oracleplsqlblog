@@ -1,0 +1,77 @@
+﻿@using System.Data
+@model KishanBlog.Models.Login
+
+@{
+    ViewBag.Title = "User List";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+    var Data = ViewBag.UserList;
+}
+<div class="block">
+    <div class="row" style="margin-bottom:30px;">
+        <div class="col-md-12">
+            <h1>Users</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-hover" id="datatable">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th style="width:50%;">Name</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (DataRow dr in Data.Rows)
+                    {
+                        <tr>
+                            <td>@dr["UserId"]</td>
+                            <td>@dr["FirstName"] @dr["LastName"]</td>
+                            <td>@dr["Email"]</td>
+                            <td><a data-UserId="@((int)dr["UserId"])" data-status="@(Convert.ToBoolean(dr["IsBlock"]))" class="btn btn-sm @(Convert.ToBoolean(dr["IsBlock"]) ? "btn-danger" : "btn-info") btnBlock">@(Convert.ToBoolean(dr["IsBlock"]) ? "Unblock" : "Block")</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
+
+    <script type="text/javascript"> 
+        $(document).ready(function () {
+        });
+
+        $("body").on("click", ".btnBlock", function () {
+            var $this = $(this);
+            var Id = $(this).attr("data-UserId");
+            var status = $(this).attr("data-status");
+            $.ajax({
+                type: "POST",
+                url: "/AdminUserList/UserListIndex",
+                data: '{UserId:"' + Id + '",IsBlock:"' + status + '"}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $this.removeClass("btn-danger");
+                    $this.removeClass("btn-info");
+                    $this.addClass(response.classname);
+                    $this.text(response.name);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+    </script>
+}

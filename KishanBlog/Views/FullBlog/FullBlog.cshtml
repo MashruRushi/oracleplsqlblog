@@ -1,0 +1,528 @@
+﻿@model KishanBlog.Models.Blog
+@using KishanBlog.Models;
+@using System.Data;
+
+@{
+    ViewBag.Title = Model.BlogTitle ?? "Full Blog";
+    ViewBag.Keywords = !string.IsNullOrWhiteSpace(Model.Tags) ? Model.Tags : string.Empty;
+    var Data = ViewBag.Data;
+}
+
+<link href="~/Content/BlogIndex.css" rel="stylesheet" />
+<style>
+    .img {
+        vertical-align: middle;
+        border-radius: 50%;
+    }
+
+    .img1 {
+        vertical-align: middle;
+    }
+</style>
+
+@if (Data != null || Data != "")
+{
+    foreach (DataRow dr in Data.Rows)
+    {
+        <div class="block">
+            <div class="row margBtm">
+                <div class="col-sm-12">
+                    <span><Blog</span>
+                </div>
+                <div class="col-sm-12 col-md-10">
+                    <h1 class="blogId blogTitle" data-blogId="@dr["BlogId"]">@dr["BlogTitle"]</h1>
+                    <p class="publishDetails">
+                        @dr["PublishOn"] by <span class="author">Kishan Mashru</span><a href="#" class="like @ViewBag.likedClass" data-type="0" data-LikeId="@ViewBag.LikeId"><span><i class="glyphicon glyphicon-thumbs-up"></i> Like</span></a><span class="count" style="margin-left:12px;"> @ViewBag.Count likes</span>
+                    </p>
+                </div>
+                <div class="row hidden-sm hidden-xs">
+                    <div class="col-md-12">
+                        <a href="@Url.Action("BlogIndex","BlogDisplay")" style="font-size:24px; color:gray;"><i class="glyphicon glyphicon-remove-circle" title="close"></i></a>
+                    </div>
+                </div>
+            </div>
+            @*@if (dr["BlogPic"].ToString() != "Images/default.png")
+                {
+                    <div class="row" style="margin-bottom:80px">
+                        <div class="col-md-12">
+                            <center><img src="~/@dr["BlogPic"]" alt="Blog Image" class="img-responsive img" height="200" width="200"></center>
+                        </div>
+                    </div>
+                }*@
+            @if (Convert.ToInt32(dr["VideoId"]) > 0)
+            {
+                <div class="row hidden-xs">
+                    <div class="col-md-12">
+                        <div id="player">
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="hdYTVideoId" value="@dr["YTVideoId"].ToString()" />
+            }
+            <div class="row margBtm blogSpace" style="margin-top:4%;">
+                <div class="col-md-12">
+                    @Html.Raw(dr["BlogLongDescription"].ToString())
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12" style="margin-bottom:25px;">
+                    <h3>Comments</h3>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-2" style="width:7.6%">
+                        @*<img src="@(Session["Email"] == null ? "/UserImages/default_avatar.jpg" : "/"+Session["UserImagePath"])" height="50" width="50" class="img" />*@
+                        <img src="~/UserImages/default_avatar.jpg" height="50" width="50" class="img" />
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextArea("Comment", "", new { @class = "form-control", placeholder = "Add a public comment..", rows = "2" })
+                        <div class="commentBtns" style="float:right; margin-top:10px; display:none;">
+                            <span>
+                                <button type="button" class="btn btn-sm btn-default cancleButton">cancel</button>
+                                <button type="button" class="btn btn-sm btn-info disabled commentButton">Comment</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" style="overflow:auto;">
+                    <hr class="cm-hr" />
+                </div>
+            </div>
+            <div id="commentMain">
+                <div class="row" style="margin-top:15px;">
+                    <div class="col-md-12">
+                        <div class="col-md-2" style="width:7.6%">
+                            @*<img src="~/UserImages/default_avatar.jpg" height="50" width="50" class="img" />*@
+                        </div>
+                        <div class="col-md-8 commentBlock" data-CommentId="0">
+                            @*<span style="color:gray;"><strong>Rushi Mashru</strong></span>*@
+                            <div>
+                            </div>
+                            <div class="row replyMain" style="margin-top:15px;" data-CommentId="0">
+                                @*<div class="col-md-8">
+                                        <div class="col-md-2">
+                                            <img src="~/UserImages/default_avatar.jpg" height="40" width="40" class="img" />
+                                        </div>
+                                        <div class="col-md-8">
+                                            <span style="color:gray;"><strong>Rushi Mashru</strong> <span style="margin-left:30px; font-size:12px;">on Apr 5, 2017</span></span>
+                                            <div>
+                                                <p style="font-size:14px; margin-bottom:3px !important;">
+                                                    It is used to query Database
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                            </div>
+                            <div class="replyBlock" style="margin-top:15px;" data-CommentId="0">
+                                @*<div class="col-md-8">
+                                        <div class="col-md-2">
+                                            <img src="~/UserImages/default_avatar.jpg" height="50" width="50" class="img1" />
+                                        </div>
+                                        <div class="col-md-8">
+                                            <textarea id="Replytxt" class="form-control" placeholder = "Add your reply..", rows = "2" ></textarea>
+                                            <div class="commentBtns" style="float:right; margin-top:10px;">
+                                                <span>
+                                                    <button type="button" class="btn btn-sm btn-default cancleButton">cancel</button>
+                                                    <button type="button" class="btn btn-sm btn-info disabled ReplyButton">Reply</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                            </div>
+                        </div>
+                        @*<div class="col-md-2" style="font-size:12px;">Apr 4, 2017 03:23 AM</div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="hdCommentId" />
+        <input type="hidden" id="hdReplyId" />
+    }
+}
+else
+{
+    <div class="block">
+        <div class="row alert alert-danger">
+            <div class="col-md-12">
+                <center><p>Oops! Data not available</p></center>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/codemirror/lib/codemirror.js"></script>
+    <script>
+        var Id = $('#hdYTVideoId').val();
+        // 2. This code loads the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '390',
+                width: '560',
+                videoId: Id,
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            //event.target.playVideo();
+        }
+
+        // 5. The API calls this function when the player's state changes.
+        //    The function indicates that when playing a video (state=1),
+        //    the player should play for six seconds and then stop.
+        var done = false;
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING && !done) {
+                //setTimeout(stopVideo, 6000);
+                done = true;
+            }
+        }
+        function stopVideo() {
+            player.stopVideo();
+        }
+    </script>
+    <script>
+        var isMobile = {
+            Android: function () {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function () {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function () {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function () {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function () {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function () {
+                return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+            }
+        };
+        $(document).ready(function () {
+            LoadComments();
+            LoadReplies();
+            if (isMobile.Android() || isMobile.iOS() || isMobile.BlackBerry()) {
+                ChangeTableViewForMobileDevice();
+                $('.blogSpace table').removeClass('table');
+            } else {
+                $('.blogSpace table').addClass('table');
+            }
+
+            $(".like").click(function () {
+                var LikeType = $(".like").attr('data-type');
+                var BlogId = $(".blogId").attr('data-blogId');
+                var LikeId;
+
+                if ($(this).hasClass('liked') && ($(this).attr('data-likeId') != undefined && $(this).attr('data-likeId') != "" && $(this).attr('data-likeId') != null)) {
+                    LikeId = $(this).attr('data-likeId');
+                }
+                else {
+                    LikeId = 0;
+                }
+
+                if ('@Session["Email"]' != null && '@Session["Email"]' != undefined && '@Session["Email"]' != '') {
+                    var Id = '@Session["Email"]';
+                    $.ajax({
+
+                        type: "POST",
+                        url: "/FullBlog/Like",
+                        data: '{blogId:"' + BlogId + '",likeType:"' + LikeType + '",likeId:"' + LikeId + '",email:"' + Id + '"}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null || response != "" || response != undefined) {
+                                if (response.status) {
+                                    $(".count").text(response.count + " likes");
+                                    $(".like").addClass("liked");
+                                    $(".like").attr('data-likeId', response.ID);
+                                }
+
+                                else {
+                                    $(".count").text(response.count + " likes");
+                                    $(".like").removeClass("liked");
+                                    $(".like").attr('data-likeId', '');
+                                }
+                            }
+
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+
+                else {
+                    if (BlogId != undefined && BlogId != null && BlogId != "") {
+
+                        $('body').load('http://localhost:1261/Login/Login?ID=' + BlogId, "", function () {
+                            $('#myModal').modal({
+                                backdrop: 'static',
+                                keyboard: false,
+                                show: true
+                            })
+                        });
+                    }
+                    else {
+                        alert('Please login to like and/or comment on this article');
+                    }
+                }
+            });
+        });
+
+        $("#Comment").click(function () {
+            $(".commentBtns").show();
+        });
+
+        $(".cancleButton").click(function () {
+            $("#Comment").val("");
+            $(".commentBtns").hide();
+        });
+
+        $("#Comment").keydown(function () {
+            var commentValue = $(this).val().trim();
+            if (commentValue != null && commentValue != undefined && commentValue != "") {
+                $(".commentButton").removeClass("disabled");
+            }
+            else {
+                $(".commentButton").addClass("disabled");
+            }
+        });
+
+        $(".commentButton").click(function () {
+            if ($("#Comment").val().trim() != null && $("#Comment").val().trim() != "" && $("#Comment").val().trim() != undefined) {
+                var BlogId = $(".blogId").attr('data-blogId');
+                if ('@Session["Email"]' != null && '@Session["Email"]' != undefined && '@Session["Email"]' != '') {
+                    var user = '@Session["Email"]';      //'rushi.p.mashru@gmail.com';
+                    var Comment = $("#Comment").val().trim();
+                    $.ajax({
+
+                        type: "POST",
+                        url: "/FullBlog/Comments",
+                        data: '{comment:"' + Comment + '",blogId:"' + BlogId + '",userId:"' + user + '"}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null || response != "" || response != undefined) {
+                                if (response.status) {
+                                    $("#commentMain").prepend('<div class="row" style="margin-top:15px;"><div class="col-md-12"><div class="col-md-2" style="width:7.6%"><img src="/' + response.picPath + '" height="50" width="50" class="img" /></div><div class="col-md-8"><span style="color:gray;"><strong>' + response.userFirstName + " " + response.userLastName + '</strong></span><div><p style="font-size:18px; margin-bottom:3px !important;">' + response.comment + '</p><p><span style="color:deepskyblue; font-size:12px;"><i class="fa fa-reply"></i> <a href="javascript:void(0)" class="replyBtn" style="color:deepskyblue;" data-CommentId=' + response.CommentId + '>Reply</a></span></p></div><div class="row replyMain" style="margin-top:15px;" data-CommentId="' + response.CommentId + '"></div><div class="replyBlock" style="margin-top:15px;" data-CommentId="' + response.CommentId + '"></div></div><div class="col-md-2" style="font-size:12px;">' + response.time + '</div></div></div><hr/>');
+                                    //<div class="row" style="margin-top:15px;"><div class="col-md-12"><div class="col-md-2" style="width:7.6%"><img src="/' + response.picPath + '" height="50" width="50" class="img" /></div><div class="col-md-8"><span style="color:gray;"><strong>' + response.userFirstName + " " + response.userLastName + '</strong></span><div><p style="font-size:18px; margin-bottom:3px !important;">' + response.comment + '</p><p><span style="color:deepskyblue; font-size:12px;"><i class="fa fa-reply"></i> <a href="#" style="color:deepskyblue;" data-CommentId=' + response.CommentId + '>Reply</a></span><span style="color:deepskyblue; font-size:12px; margin-left:5%;"><a href="#" style="color:deepskyblue;">View all 10 replies</a><i class="fa fa-arrow-down"></i> </span></p></div></div><div class="row replyMain" style="margin-top:15px;" data-CommentId="' + response.CommentId + '"></div><div class="replyBlock" style="margin-top:15px;" data-CommentId="' + response.CommentId + '"></div></div><div class="col-md-2" style="font-size:12px;">' + response.time + '</div></div></div><hr/>
+                                }
+
+                                else {
+                                    alert("Oops! something went wrong");
+                                }
+                            }
+
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+                else {
+                    if (BlogId != undefined && BlogId != null && BlogId != "") {
+
+                        $('body').load('http://localhost:1261/Login/Login?ID=' + BlogId, "", function () {
+                            $('#myModal').modal({
+                                backdrop: 'static',
+                                keyboard: false,
+                                show: true
+                            })
+                        });
+                    }
+                    else {
+                        alert('Please login to like and/or comment on this article');
+                    }
+                }
+            }
+            else {
+                alert("Cannot post empty comment");
+            }
+
+        });
+
+        $("body").on("click", ".replyBtn", function () {
+            $(".replyBlock").show();
+            var commentID = $(this).attr("data-CommentId");
+            $(".replyBlock").text("");
+            $(".replyBlock[data-CommentId='" + commentID + "']").append('<div class="col-md-8" style="margin-left:-16px;"><div class="col-md-2"><img src="@(Session["Email"]==null ? "/UserImages/default_avatar.jpg":"/"+Session["UserImagePath"])" height="40" width="40" class="img" /></div><div class="col-md-8"><textarea class="form-control ReplyTxt" placeholder = "Add your reply..", rows = "2" ></textarea><div class="ReplyBtns" style="float:right; margin-top:10px;"><span><button type="button" class="btn btn-sm btn-default ReplyCancleButton" style="margin-right:10px;">cancle</button><button type="button" class="btn btn-sm btn-info disabled ReplyButton">Reply</button></span></div></div></div>');
+            $(".replyMain").append("");
+        });
+
+        $("body").on("keydown", ".ReplyTxt", function () {
+            var ReplyValue = $(this).val().trim();
+            if (ReplyValue != null && ReplyValue != undefined && ReplyValue != "") {
+                $(".ReplyButton").removeClass("disabled");
+            }
+            else {
+                $(".ReplyButton").addClass("disabled");
+            }
+        });
+
+        $("body").on("click", ".ReplyCancleButton", function () {
+            $(".ReplyTxt").val("");
+            $(".replyBlock").hide();
+        });
+
+        $("body").on("click", ".ReplyButton", function () {
+            if ($(".ReplyTxt").val().trim() != null && $(".ReplyTxt").val().trim() != "" && $(".ReplyTxt").val().trim() != undefined) {
+                var BlogId = $(".blogId").attr('data-blogId');
+                if ('@Session["Email"]' != null && '@Session["Email"]' != undefined && '@Session["Email"]' != '') {
+                    var user = '@Session["Email"]';                 //'kishan.p.mashru@gmail.com';
+                    var reply = $(".ReplyTxt").val().trim();
+                    var commentId = $(this).closest('.replyBlock').attr("data-commentid");
+                    //alert(commentId);
+                    $.ajax({
+                        type: "POST",
+                        url: "/FullBlog/Reply",
+                        data: '{reply:"' + reply + '",blogId:"' + BlogId + '",userId:"' + user + '",CommentId:"' + commentId + '"}',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null || response != "" || response != undefined) {
+                                if (response.status) {
+                                    $(".replyMain[data-commentid=" + commentId + "]").append('<div class="col-md-8" style="margin-bottom:10px;"><div class="col-md-2"><img src="/' + response.picPath + '" height="40" width="40" class="img" /></div><div class="col-md-8"><span style="color:gray;"><strong>' + response.userFirstName + " " + response.userLastName + '</strong> <span style="margin-left:10px; font-size:12px;">on  ' + response.time + '</span></span><div><p style="font-size:14px; margin-bottom:3px !important;">' + response.reply + '</p></div></div></div>');
+                                    $(".replyBlock").text("");
+                                    $(".replyBlock").hide();
+                                }
+
+                                else {
+                                    alert("Oops! something went wrong");
+                                }
+                            }
+
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+                else {
+                    if (BlogId != undefined && BlogId != null && BlogId != "") {
+
+                        $('body').load('http://localhost:1261/Login/Login?ID=' + BlogId, "", function () {
+                            $('#myModal').modal({
+                                backdrop: 'static',
+                                keyboard: false,
+                                show: true
+                            })
+                        });
+                    }
+                    else {
+                        alert('Please login to like and/or comment on this article');
+                    }
+                }
+            }
+            else {
+                alert("Cannot post empty comment");
+            }
+
+        });
+        //setInterval(function () { $("#commentMain").text(""); LoadComments(); }, 4000)
+
+        function LoadComments() {
+            var BlogId = $(".blogId").attr('data-blogId');
+            var SkipId = $("#hdCommentId").val();
+            $.ajax({
+
+                type: "POST",
+                url: "/FullBlog/LoadComments",
+                data: '{bolgId:"' + BlogId + '",skipId:"' + SkipId + '"}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response != null || response != "" || response != undefined) {
+                        if (response.status) {
+                            $.each(response.commentList, function (index, value) {
+                                $("#commentMain").prepend('<div class="row" style="margin-top:15px;"><div class="col-md-12"><div class="col-md-2" style="width:7.6%"><img src="/' + value.PicPath + '" height="50" width="50" class="img" /></div><div class="col-md-8"><span style="color:gray;"><strong>' + value.UserFirstName + " " + value.UserLastName + '</strong></span><div><p style="font-size:18px; margin-bottom:3px !important;">' + value.Comment + '</p><p><span style="color:deepskyblue; font-size:12px;"><i class="fa fa-reply"></i> <a href="javascript:void(0)" class="replyBtn" style="color:deepskyblue;" data-CommentId=' + value.CommentId + '>Reply</a></span></p></div><div class="row replyMain" style="margin-top:15px;" data-CommentId="' + value.CommentId + '"></div><div class="replyBlock" style="margin-top:15px;" data-CommentId="' + value.CommentId + '"></div></div><div class="col-md-2" style="font-size:12px;">' + value.CommentOn + '</div></div></div><hr/>');
+                            });
+                            $("#hdCommentId").val(response.ID);
+                        }
+
+                        //else {
+                        //    alert("Oops! something went wrong");
+                        //}
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+
+        function LoadReplies() {
+            var BlogId = $(".blogId").attr('data-blogId');
+            var SkipId = $("#hdReplyId").val();
+            $.ajax({
+
+                type: "POST",
+                url: "/FullBlog/LoadReplies",
+                data: '{bolgId:"' + BlogId + '",skipId:"' + SkipId + '"}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response != null || response != "" || response != undefined) {
+                        if (response.status) {
+                            $.each(response.ReplyList, function (index, value) {
+                                $(".replyMain[data-commentid='" + value.CommentId + "']").append('<div class="col-md-8" style="margin-bottom:10px;"><div class="col-md-2"><img src="/' + value.PicPath + '" height="40" width="40" class="img" /></div><div class="col-md-8"><span style="color:gray;"><strong>' + value.UserFirstName + " " + value.UserLastName + '</strong> <span style="margin-left:10px; font-size:12px;">on  ' + value.ReplyOn + '</span></span><div><p style="font-size:14px; margin-bottom:3px !important;">' + value.Reply + '</p></div></div></div>');
+                            });
+                            $("#hdReplyId").val(response.ID);
+                        }
+
+                        //else {
+                        //    alert("Oops! something went wrong");
+                        //}
+                    }
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
+
+        function ChangeTableViewForMobileDevice() {
+            var style = '<style type="text/css">';
+            var styleContent = '';
+            $('.blogSpace table th').each(function (index) {
+                index = index + 1;
+                styleContent = styleContent + 'td:nth-of-type(' + index + '):before { content: "' + $(this).text() + '"; }'
+            });
+            style = style + styleContent + '</style>';
+            $('head').append(style);
+        }
+    </script>
+}

@@ -1,0 +1,80 @@
+﻿@model KishanBlog.Models.OracleTutorials
+
+@{
+    ViewBag.Title = "Create Oracle Tutorials";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage.cshtml";
+    bool IsEdit = ViewBag.IsEdit;
+    int? Id = ViewBag.Id;
+}
+
+<link href="~/Content/Blog.css" rel="stylesheet" />
+
+@using (Html.BeginForm("AdminOracleTutorialsCreate", "AdminOracleTutorials", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="block">
+        <div class="col-md-12">
+            <h1>@(IsEdit ? "Edit Oracle Tutorial" : "Create Orcale Tutorial")</h1>
+        </div>
+        @Html.Hidden("IsEdit")
+        @Html.Hidden("Id")
+        @if (ViewBag.Msg != "" || ViewBag.Msg != null)
+        {
+            <div class="row alert @ViewBag.Status">
+                <div class="col-md-12">
+                    <span>@ViewBag.Msg</span>
+                </div>
+            </div>
+        }
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>Publish Date:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.PublishOn, "", new { @class = "form-control datetimepicker", @placeholder = "mm dd yyyy*" })
+                @Html.ValidationMessageFor(model => model.PublishOn, "", new { @class = "clrval" })
+            </div>
+        </div>
+
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>Tab Name:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.TutorialTabName, "", new { @class = "form-control datetimepicker", @placeholder = "Tab Name" })
+            </div>
+        </div>
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>Tutorial Title:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.TutorialTitle, "", new { @class = "form-control datetimepicker", @placeholder = "Tutorial Title" })
+            </div>
+        </div>
+
+        <div class="row mrgBtm">
+            <div class="col-md-2">
+                <strong>Description:</strong>
+            </div>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.TutorialDescription, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-2 col-md-10">
+                <center><input type="submit" class="btn btn-default primaryBtn" value="Publish" /></center>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section scripts{
+<script src="~/Areas/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('TutorialDescription', {
+            height: 350,
+            width: 880,
+        });
+    </script>
+}

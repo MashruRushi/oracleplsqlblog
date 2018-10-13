@@ -1,0 +1,27 @@
+﻿body {
+}
+
+.margBtm
+{
+    margin-bottom:25px;
+}
+
+.checkBoxAdjustment{
+    top:-2px;
+    width:0%;
+}
+
+.primaryBtn{
+    color:white !important;
+    background-color:red !important;
+    border-color:gray !important;
+}
+
+.Reqclr{
+    color:red;
+}
+
+.note{
+    color:gray;
+    font-family:monospace;
+}

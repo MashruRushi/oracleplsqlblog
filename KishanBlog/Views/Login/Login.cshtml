@@ -1,0 +1,320 @@
+﻿@model KishanBlog.Models.Login
+@using CaptchaMvc.HtmlHelpers;
+@using CaptchaMvc;
+
+@{
+    Layout = null;
+    var BlogId = ViewBag.BlogID;
+    string id = ViewBag.name;
+    string password = ViewBag.password;
+    var page = ViewBag.page == null ? "A" : ViewBag.page;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <meta name="description" content="@(ViewBag.Description ?? "Login page of oracleplsqlblog.")">
+    <meta name="keywords" content="@(ViewBag.Keywords ?? "Plsql,PL/SQL,Blog,YouTube Videos,Oracle,Oracle 10g,Oracle plsql,Oracle pl/sql interview question,Oracle Tips and Tricks,Kishan Mashru,pl/sql syntax,like,login,user,security")">
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/Login.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+</head>
+<body>
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    @if(BlogId!=null)
+                    {
+                    <a href="@Url.Action("FullBlog","FullBlog",new {ID=BlogId})" class="close">&times;</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Index", "MyHome")" class="close">&times;</a>
+                    }
+
+                    <center>
+                        <button id="" type="button" class="btn btn-default LogInBtn primaryBtn">Log In</button>
+                        <button id="" type="button" class="btn btn-default SignUpBtn">Sign Up</button>
+                    </center>
+                </div>
+                <div class="LogInSection" style="visibility:visible;">
+                    <div class="modal-body">
+                        <div class="container">
+                            @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("BlogId")
+                                @Html.ValidationSummary(true, "", new { @class = "" })
+                                <div class="row margBtm">
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(m => m.Email, id, new { @class = "form-control", @placeholder = "Email*"})
+                                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "Reqclr" })
+                                    </div>
+                                </div>
+                                <div class="row margBtm">
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(m => m.Password, password, new { @class = "form-control", @placeholder = "Password*",@type="password"})
+                                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "Reqclr" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2 checkBoxAdjustment">
+                                        @Html.CheckBoxFor(m => m.Remember, new { @class = "checkbox" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <span><b>Remember Me</b></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a href="@Url.Action("SendPasswordLink","ForgotPassword")">Forgotten Password?</a>
+                                    </div>
+                                </div>
+                                if (ViewBag.Msg != null || ViewBag.Msg != "")
+                                {
+                                    <div class="row">
+                                        <div class="col-md-12 alert @ViewBag.status">
+                                            <center>@ViewBag.Msg</center>
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="modal-footer">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <center><button type="submit" class="btn btn-default primaryBtn">Log In</button></center>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div id="myModal1" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                         @if(BlogId!=null)
+                    {
+                    <a href="@Url.Action("FullBlog","FullBlog",new {ID=BlogId})" class="close">&times;</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Index", "MyHome")" class="close">&times;</a>
+                    }                        
+                        <center>
+                            <button type="button" class="btn btn-default LogInBtn">Log In</button>
+                            <button type="button" class="btn btn-default SignUpBtn primaryBtn">Sign Up</button>
+                        </center>
+                    </div>
+                    <div class="SignUpSection" style="visibility:hidden;">
+                        <div class="modal-body">
+                            <div class="container">
+                                @using (Html.BeginForm("SignUp", "Login", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.Hidden("BlogId")
+                                    <div class="row margBtm">
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(m => m.FirstName, "", new { @class = "form-control", @placeholder = "First Name*" })
+                                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "Reqclr" })
+                                        </div>
+                                        <div class="col-md-6">
+                                            @Html.TextBoxFor(m => m.LastName, "", new { @class = "form-control", @placeholder = "Last Name*" })
+                                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "Reqclr" })
+                                        </div>
+                                    </div>
+                                    <div class="row margBtm">
+                                        <div class="col-md-12">
+                                            @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control", @placeholder = "Email*" })
+                                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "Reqclr" })
+                                        </div>
+                                    </div>
+                                    <div class="row margBtm">
+                                        <div class="col-md-4">
+                                            @Html.TextBoxFor(m => m.Country, "", new { @class = "form-control", @placeholder = "Country" })
+                                        </div>
+                                        <div class="col-md-4">
+                                            @Html.TextBoxFor(m => m.State, "", new { @class = "form-control", @placeholder = "State" })
+                                        </div>
+                                        <div class="col-md-4">
+                                            @Html.TextBoxFor(m => m.City, "", new { @class = "form-control", @placeholder = "City" })
+                                        </div>
+                                    </div>
+                                    <div class="row margBtm">
+                                        <div class="col-md-3">
+                                            <b>Who are you*?</b>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="dropdown" name="UserType">
+                                                <option value="0">--select--</option>
+                                                <option value="1">Student</option>
+                                                <option value="2">Proffesor</option>
+                                                <option value="3">Developer</option>
+                                                <option value="4">Other</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <span class="Reqclr errormsg"></span>
+                                        </div>
+
+                                    </div>
+                                    <div class="row margBtm">
+                                        <div class="col-md-6">
+                                            @Html.MathCaptcha()
+                                            <span class="Reqclr">@ViewBag.CaptchaMsg</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p id="Rnote">
+                                                By clicking Sign Up,you agree to our<a href="#"> Terms and condition</a>.You will receive <span class="pasfont">password</span> on your
+                                                <span style="color: Red;">email Id</span>.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    if (ViewBag.Msg != null || ViewBag.Msg != "")
+                                    {
+                                        <div class="row">
+                                            <div class="col-md-12 alert @ViewBag.status">
+                                                <center>@ViewBag.Msg</center>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <div class="modal-footer">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                @*<center><button type="submit" class="btn btn-default primaryBtn">Sign Up</button></center>*@
+                                                <center><input type="submit" class="btn btn-default primaryBtn" value="Sign Up" /></center>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $(window).load(function () {
+            if ('@page' == "signup") {
+
+                $('#myModal1').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                })
+                $('.LogInSection').css('visibility', 'hidden');
+                $('.SignUpSection').css('visibility', 'visible');
+
+            }
+            else {
+                $('#myModal').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                })
+            }
+        });
+
+        $(document).ready(function () {
+            $('#CaptchaInputText').addClass('form-control');
+            $("#CaptchaInputText").attr("placeholder", "Captcha  answer*");
+
+        });
+
+        $('body').on('click', '.LogInBtn', function () {
+            if ($(this).hasClass('primaryBtn')) {
+                //$(this).addClass('disabled');
+                e.stopPropagation();
+            }
+            $('.SignUpBtn').removeClass('primaryBtn');
+
+            $('.SignUpSection').css('visibility', 'hidden');
+            $('.LogInSection').css('visibility', 'visible');
+
+            $('#myModal1').modal('toggle');
+
+            $('#myModal').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            })
+
+            $('.LogInBtn').addClass('primaryBtn');
+
+        });
+
+        $('body').on('click', '.SignUpBtn', function () {
+            debugger;
+
+            if ($(this).hasClass('primaryBtn')) {
+                //$(this).addClass('disabled');
+                e.stopPropagation();
+            }
+            $('.LogInBtn').removeClass('primaryBtn');
+
+            $('.LogInSection').css('visibility', 'hidden');
+            $('.SignUpSection').css('visibility', 'visible');
+
+            $('#myModal').modal('toggle');
+
+            $('#myModal1').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            })
+
+            $('.SignUpBtn').addClass('primaryBtn');
+        });
+
+        $('body').on('change', '.dropdown', function () {
+            DropDownValidation();
+        });
+
+        function DropDownValidation() {
+            $('.dropdown').each(function () {
+                var value = $(this).val();
+                if (value == 0) {
+                    $('.errormsg').text('This field is required');
+                }
+                else {
+                    $('.errormsg').text('');
+                }
+            });
+        }
+
+        $('body').on('click', 'input[type="submit"]', function () {
+
+            var value = $('.dropdown').val();
+            if (value == 0) {
+                $('.errormsg').text('This field is required');
+            }
+            else {
+                $('.errormsg').text('');
+            }
+        });
+
+        //$('#myModal').modal('show');
+    </script>
+</body>
+</html>

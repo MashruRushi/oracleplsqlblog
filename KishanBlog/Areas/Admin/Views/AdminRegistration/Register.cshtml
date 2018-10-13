@@ -1,0 +1,68 @@
+﻿@model KishanBlog.Areas.Admin.Models.AdminLogin
+
+@{
+    Layout = null;
+}
+
+
+<meta name="viewport" content="width=device-width" />
+<title>Admin Registrarion</title>
+
+<link href="~/Content/admin.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+@using (Html.BeginForm("Register", "AdminRegistration", FormMethod.Post))
+{
+    <div class="container">
+        <div class="Box">
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="@Url.Action("Login", "AdminLogin")" class="pull-right">Log in</a>
+                </div>
+            </div>
+            <div class="row mrgBtm">
+                <div class="col-md-12">
+                    <center><h1>Admin Registration</h1></center>
+                </div>
+            </div>
+            <div class="row mrgBtm">
+                <div class="col-md-12">
+                    @Html.TextBoxFor(model => model.AdminName, "", new { @class = "form-control", @placeholder = "Full name" })
+                    @Html.ValidationMessageFor(model => model.AdminName, "", new { @class = "clr" })
+                </div>
+            </div>
+
+            <div class="row mrgBtm">
+                <div class="col-md-12">
+                    @Html.TextBoxFor(model => model.Email, "", new { @class = "form-control", @placeholder = "Email" })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "clr" })
+                    <span class="clr">@ViewBag.loginError</span>
+                    <span style="color:green;">@ViewBag.loginMsg</span>
+                </div>
+            </div>            
+            <center>
+                <p>
+                    By clicking Register,you agree to our<a href="#"> Terms and condition</a>. Once your account is approved. You will receive <strong>Log in </strong>credentials on your
+                    <span style="color: Red;">email Id</span>.
+                </p>
+            </center>
+            <div class="row mrgBtm">
+                <div class="col-md-12">
+                    <center><input type="submit" class="btn btn-primary btn-lg primaryBtn" value="Register" /></center>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <center><strong><p style="font-family:Calibri;">&copy; @DateTime.Now.Year Kishan Mashru's Blog. All rights reserved</p></strong></center>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>

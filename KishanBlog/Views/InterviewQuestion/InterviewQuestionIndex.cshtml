@@ -1,0 +1,89 @@
+﻿@model KishanBlog.Models.InterviewQuestions
+@using System.Data;
+
+@{
+    ViewBag.Title = "Interview Questions";
+    ViewBag.Description = "This page contains oracle interview questions which are frequently asked in the interviews";
+    ViewBag.Keywords = "Plsql,PL/SQL,Blog,YouTube Videos,Oracle,Oracle 10g,Oracle plsql,Oracle pl/sql interview question,Oracle Tips and Tricks,Kishan Mashru,pl/sql syntax,interview,questions";
+    var Data = ViewBag.QAData;
+}
+
+<link href="~/Content/BlogIndex.css" rel="stylesheet" />
+
+<div class="block">
+    <div class="row margBtm">
+        <div class="col-md-12">
+            <h1 class="redClr"><i class="fa fa-pencil"></i> Oracle Interview Questions</h1>
+        </div>
+    </div>
+    @if(Data!=null && Data.Rows.Count > 0)
+    {
+        foreach (DataRow dr in Data.Rows)
+        {
+        <div class="row margBtm">
+            <div class="col-md-12">
+                <strong class="shortDescription">@(Convert.ToInt32(dr["Index"])) ) @dr["InterviewQuestion"].ToString()</strong>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="shortDescription">
+                    @Html.Raw(dr["InterviewQuestionLongDescription"].ToString())
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr style="border:1px solid #ccc; margin-bottom:30px; margin-top:30px;" />
+            </div>
+        </div>
+        }
+    }
+    else
+    {
+        <div class="row">
+            <div class="alert alert-danger">
+                <span>No Data Found</span>
+            </div>
+        </div>
+    }
+    @*<div class="row margBtm">
+            <div class="col-md-12">
+                <strong class="shortDescription">2)  What is the purpose of using PL/SQL?</strong>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="shortDescription">
+                    PL/SQL is an extension of SQL. While SQL is non-procedural, PL/SQL is a procedural language designed by Oracle. It is invented to overcome the limitations of SQL.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr style="border:1px solid #ccc; margin-bottom:30px; margin-top:30px;" />
+            </div>
+        </div>*@
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@section scripts{
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+
+}
